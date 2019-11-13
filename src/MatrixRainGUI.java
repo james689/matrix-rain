@@ -15,7 +15,7 @@ import javax.swing.Timer;
 public class MatrixRainGUI extends JPanel {
 
     private List<Streamer> listStreamers = null;
-    private int nMaxStreamers = 200;
+    private int nMaxStreamers = 100;
     private int numCols, numRows;
     private Font monospaceFont = new Font("Courier New", Font.PLAIN, 10);
     private Timer timer;
@@ -31,6 +31,7 @@ public class MatrixRainGUI extends JPanel {
 
         int column = 0; // x coordinate on screen (will be given a random column in future)
         float fPosition = 0.0f; // y coordinate, the head of the stream
+        double fSpeed = 10.0;
         String text;
 
         public Streamer() {
@@ -40,23 +41,31 @@ public class MatrixRainGUI extends JPanel {
         public void prepareStreamer() {
             column = (int) (Math.random() * numCols);
             fPosition = 0.0f;
+            fSpeed = (Math.random() * 40) + 5;
             text = "ABCDEFGHIJKLMNO";
         }
     }
 
     class TimerListener implements ActionListener {
 
+        private long lastTimeMillis = System.currentTimeMillis();
+        
         public void actionPerformed(ActionEvent ae) {
+            
             // called when timer fires
             if (listStreamers == null) {
                 return; // no streamers created yet
             }
+            
+            long currentTimeMillis = System.currentTimeMillis();
+            long elapsedTimeMillis = currentTimeMillis - lastTimeMillis;
+            double elapsedTimeSeconds = elapsedTimeMillis / 1000.0;
+            lastTimeMillis = currentTimeMillis;
 
             for (Streamer s : listStreamers) {
-                s.fPosition += 1;
-                //s.fPosition += 10.0 * fElapsedTime;
-                if (s.fPosition > numRows) {
-                    s.fPosition = 0;
+                s.fPosition += s.fSpeed * elapsedTimeSeconds;
+                if (s.fPosition - s.text.length() > numRows) {
+                    s.prepareStreamer();
                 }
             }
             repaint();
