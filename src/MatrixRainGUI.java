@@ -32,7 +32,7 @@ public class MatrixRainGUI extends JPanel {
     private int numCols, numRows; // the panel is divided into a grid of size
     // numRows*numCols. Each cell in the grid has space to display a single character.
     private int cellWidth, cellHeight; // width and height of a cell in the grid.
-    private Font font = new Font("Times New Roman", Font.PLAIN, 15); // font used to display the characters on screen
+    private Font font = new Font("Monospaced", Font.PLAIN, 15); // font used to display the characters on screen
     private Dimension oldPanelSize = new Dimension(400, 400); // used to detect whether there has been a change in the panel size.
     private boolean[][] cellsDrawnIn; // used to determine whether a cell in the grid already
     // contains a character, and thus prevent drawing multiple characters to the same position
